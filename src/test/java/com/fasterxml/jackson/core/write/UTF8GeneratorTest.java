@@ -104,6 +104,102 @@ class UTF8GeneratorTest extends JUnit5TestBase
     }
 
     @Test
+    void writeStartObjectWithParameter() throws Exception
+    {
+        // Arrange
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        JsonGenerator gen = JSON_F.createGenerator(bytes);
+        Object testObject = new Object();
+        String testFieldName = "test_name";
+        String testFieldValue = "test_value";
+
+        // Act
+        gen.writeStartObject(testObject);
+        gen.writeFieldName(testFieldName);
+        gen.writeString(testFieldValue);
+        gen.writeEndObject();
+        gen.flush();
+        gen.close();
+
+        // Assert
+        JsonParser p = JSON_F.createParser(bytes.toByteArray());
+        assertToken(JsonToken.START_OBJECT, p.nextToken());
+        assertToken(JsonToken.FIELD_NAME, p.nextToken());
+        assertEquals(testFieldName, p.getText());
+        assertToken(JsonToken.VALUE_STRING, p.nextToken());
+        assertEquals(testFieldValue, p.getText());
+        assertToken(JsonToken.END_OBJECT, p.nextToken());
+    }
+
+    @Test
+    void writeStartArrayWithParameter() throws Exception
+    {
+        // Arrange
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        JsonGenerator gen = JSON_F.createGenerator(bytes);
+        Object testObject = new Object();
+        String testFieldName = "array";
+        int intValue = 2;
+
+        // Act
+        gen.writeStartObject();
+        gen.writeFieldName(testFieldName);
+        gen.writeStartArray(testObject);
+        gen.writeNumber(intValue);
+        gen.writeEndArray();
+        gen.writeEndObject();
+        gen.flush();
+        gen.close();
+
+        // Assert
+        JsonParser p = JSON_F.createParser(bytes.toByteArray());
+        assertToken(JsonToken.START_OBJECT, p.nextToken());
+        assertToken(JsonToken.FIELD_NAME, p.nextToken());
+        assertEquals(testFieldName, p.getText());
+        assertToken(JsonToken.START_ARRAY, p.nextToken());
+        assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+        assertEquals(intValue, p.getIntValue());
+        assertToken(JsonToken.END_ARRAY, p.nextToken());
+        assertToken(JsonToken.END_OBJECT, p.nextToken());
+    }
+
+    @Test
+    void writeRawTest() throws Exception
+    {
+        // Arrange
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        JsonGenerator gen = JSON_F.createGenerator(bytes);
+        String test = "ÿ";
+
+        // Act
+        gen.writeRaw(test.charAt(0));
+        gen.flush();
+        gen.close();
+
+        // Assert
+        JsonParser p = JSON_F.createParser(bytes.toByteArray());
+        assertEquals(null, p.getText());
+    }
+
+    @Test
+    void writeRawArrayTest() throws Exception
+    {
+        // Arrange
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        JsonGenerator gen = JSON_F.createGenerator(bytes);
+        String test = "test special character ÿ";
+
+        // Act
+        gen.writeRaw(test.toCharArray(), 0, 24);
+        gen.flush();
+        gen.close();
+
+        // Assert
+        JsonParser p = JSON_F.createParser(bytes.toByteArray());
+        assertEquals(null, p.getText());
+    }
+
+    @Test
     void nestingDepthWithSmallLimitNestedObject() throws Exception
     {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();

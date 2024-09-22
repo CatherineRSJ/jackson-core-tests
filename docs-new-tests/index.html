@@ -20,11 +20,78 @@
                 Ce premier test vérifie le bon fonctionnement du 2ième constructeur de cette class: <code>UTF8JsonGenerator</code>.
                 Nous avons choisi de tester cette fonctionnalité puisqu'il s'agit d'un constructeur permettant la gestion manuelle d'un buffer et elle ne pouvait pas être ignorée au niveau des tests.
             </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>UTF8JsonGenerator.java</code> ligne 149</div>
+            <div>Test: <code>UTF8GeneratorTest.java</code> ligne 58</div>
             <h4>Captures d'écran:</h4>
             <div>Avant</div>
             <img src="images/test1_before.png" alt="Test #1 avant" width="600">
             <div>Après</div>
             <img src="images/test1_after.png" alt="Test #1 après" width="600">
+        </section>
+
+        <section>
+            <h2>Test #2</h2>
+            <p>
+                Ce test s'assure que la méthode <code>writeStartObject</code> qui reçoit un <code>Object</code> en paramètre s'exécute de la bonne façon.
+                Le fait de recevoir un <code>Object</code> en paramètre assiste à la modification du contexte d'écriture et cette partie doit être bien testée.
+            </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>UTF8JsonGenerator.java</code> ligne 394</div>
+            <div>Test: <code>UTF8GeneratorTest.java</code> ligne 107</div>
+            <h4>Captures d'écran:</h4>
+            <div>Avant</div>
+            <img src="images/test2_before.png" alt="Test #2 avant" width="600">
+            <div>Après</div>
+            <img src="images/test2_after.png" alt="Test #2 après" width="600">
+        </section>
+
+        <section>
+            <h2>Test #3</h2>
+            <p>
+                Ce test s'assure que la méthode <code>writeStartArray</code> qui reçoit un <code>Object</code> en paramètre s'exécute de la bonne façon.
+                Le fait de recevoir un <code>Object</code> en paramètre assiste à la modification du contexte d'écriture et cette partie doit être bien testée.
+            </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>UTF8JsonGenerator.java</code> ligne 329</div>
+            <div>Test: <code>UTF8GeneratorTest.java</code> ligne 135</div>
+            <h4>Captures d'écran:</h4>
+            <div>Avant</div>
+            <img src="images/test3_before.png" alt="Test #3 avant" width="600">
+            <div>Après</div>
+            <img src="images/test3_after.png" alt="Test #3 après" width="600">
+        </section>
+
+        <section>
+            <h2>Test #4</h2>
+            <p>
+                Ce test s'assure que la méthode <code>writeRaw</code> qui reçoit un <code>char</code> en paramètre s'exécute de la bonne façon.
+                Il est toujours pertinent de tester avec des caractères spéciaux pour les librairies de formattage comme Jackson.
+            </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>UTF8JsonGenerator.java</code> ligne 794</div>
+            <div>Test: <code>UTF8GeneratorTest.java</code> ligne 167</div>
+            <h4>Captures d'écran:</h4>
+            <div>Avant</div>
+            <img src="images/test4_before.png" alt="Test #4 avant" width="600">
+            <div>Après</div>
+            <img src="images/test4_after.png" alt="Test #4 après" width="600">
+        </section>
+
+        <section>
+            <h2>Test #5</h2>
+            <p>
+                Ce test s'assure que la méthode <code>writeRaw</code> qui reçoit un <code>char</code>, un <code>offset</code> et un <code>len</code>en paramètre s'exécute de la bonne façon.
+                Il est toujours pertinent de tester avec des caractères spéciaux pour les librairies de formattage comme Jackson.
+            </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>UTF8JsonGenerator.java</code> ligne 750</div>
+            <div>Test: <code>UTF8GeneratorTest.java</code> ligne 185</div>
+            <h4>Captures d'écran:</h4>
+            <div>Avant</div>
+            <img src="images/test5_before.png" alt="Test #5 avant" width="600">
+            <div>Après</div>
+            <img src="images/test5_after.png" alt="Test #5 après" width="600">
         </section>
     </main>
 </body>
