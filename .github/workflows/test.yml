@@ -29,7 +29,7 @@ jobs:
         run: |
           coverage=$COVERAGE
           threshold=81.58
-          if (( $(echo "$coverage <= $threshold" | bc -l) )); then
+          if (( $(echo "$coverage - $threshold <= 0.1" | bc -l) )); then
             echo "Coverage has not improved."
             exit 1
           else
