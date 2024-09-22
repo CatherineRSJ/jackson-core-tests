@@ -51,6 +51,44 @@ class UTF8GeneratorTest extends JUnit5TestBase
     }
 
     @Test
+    /**
+     * Test pour s'assurer que le constructeur de UTF8JsonGenerator avec le buffer a le comportement attendu
+     * @throws Exception
+     */
+    void utf8JsonGeneratorBufferConstructor() throws Exception
+    {
+        // Arrange
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        IOContext ioc = testIOContext();
+        int outputOffset = 0;
+        String str = "Test string";
+        int length = 10;
+        byte[] buffer = ioc.allocWriteEncodingBuffer();
+
+        // Act
+        JsonGenerator gen = new UTF8JsonGenerator(ioc, 0, null, bytes, '"', buffer, outputOffset, true);
+        for (int i = 1; i <= length; ++i) {
+            gen.writeNumber(1);
+        }
+        gen.writeString(str);
+        gen.flush();
+        gen.close();
+        JsonParser p = JSON_F.createParser(bytes.toByteArray());
+
+        // Assert
+        for (int i = 1; i <= length; ++i) {
+            assertToken(JsonToken.VALUE_NUMBER_INT, p.nextToken());
+            assertEquals(1, p.getIntValue());
+        }
+        assertToken(JsonToken.VALUE_STRING, p.nextToken());
+        assertEquals(str, p.getText());
+        assertNull(p.nextToken());
+        p.close();
+        assertInstanceOf(UTF8JsonGenerator.class, gen);
+        assertEquals(gen.getOutputBuffered(), outputOffset);
+    }
+
+    @Test
     void nestingDepthWithSmallLimit() throws Exception
     {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
