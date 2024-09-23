@@ -93,6 +93,82 @@
             <div>Après</div>
             <img src="images/test5_after.png" alt="Test #5 après" width="600">
         </section>
+
+        <section></section>
+            <h2>Test #6</h2>
+            <p>
+                D'abord, il faut comprendre le contexte du test sur le méthode collectDefaults. Ici, on test un "Enum". Un Enum est un fichier qui a des fonctionnalités à activer et à désactiver quand il écrit des données en JSON. Chaque constante représente une fonctionnalité et chacune est représentée de manière binaire (1 ou 0 pour activé ou désactivé). 
+                Ce test est important, car s'il y a des changements dans les paramètres par défaut, cela peut affecter l'écriture en JSON. Ce test permet de d'assurer que ce sont les bonnes fonctionnalités qui sont activées et désactivées, et ce, même après les changements en continu dans ce type de projet, qui peut parfois, par inadvertance, introduire des bugs ou des changements aux paramètres par défaut, en protégeant le "bitmask".
+            </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>JsonWriteFeature.java</code> ligne 137</div>
+            <div>Test: <code>JsonWriteFeatureEscapeFowardSlashTest.java</code> ligne 75</div>
+            <h4>Captures d'écran:</h4>
+            <div>Avant</div>
+            <img src="images/Tests-6-7-avant.png" alt="Test #6 avant" width="600">
+            <div>Après</div>
+            <img src="images/Tests-6-7-apres.png" alt="Test #6 après" width="600">
+        </section>
+
+        <section></section>
+            <h2>Test #7</h2>
+            <p>
+                Le contexte est le même que pour le test #6. Ce test, de la méthode enabledIn, est important, car contrairement au test précédent, on vérifie individuellement l'activation ou non d'une fonctionnalité qui n'est pas par défaut. En ne se concentrant pas que sur les paramètres par défaut, mais aussi sur des paramètres en particulier, comme "ESCAPE_FORWARD_SLASHES" dans notre cas, on peut tester une plus grande variété de cas.
+            </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>JsonWriteFeature.java</code> ligne 160</div>
+            <div>Test: <code>UTF8GeneratorTest.java</code> ligne 87</div>
+            <h4>Captures d'écran:</h4>
+            <div>Avant</div>
+            <img src="images/Tests-6-7-avant.png" alt="Test #7 avant" width="600">
+            <div>Après</div>
+            <img src="images/Tests-6-7-apres.png" alt="Test #7 après" width="600">
+        </section>
+
+        <section></section>
+            <h2>Test #8</h2>
+            <p>
+                Ce test est important, car on s'assure que la méthode resetWithCopy ait le comportement attendu, c'est-à-dire de réinitialiser et de copier des données (un bout de texte dans notre test) dans le buffer, ce qui est primordial pour gérer les données de chaine partielle. Ainsi, on évite des problèmes potentiels de corruption du contenu du buffer.
+            </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>TextBuffer.java</code> ligne 294</div>
+            <div>Test: <code>TextBufferTest.java</code> ligne 222</div>
+            <h4>Captures d'écran:</h4>
+            <div>Avant</div>
+            <img src="images/Tests-8-9-10-avant.png" alt="Test #8 avant" width="600">
+            <div>Après</div>
+            <img src="images/Tests-8-10-apres.png" alt="Test #8 après" width="600">
+        </section>
+
+        <section></section>
+            <h2>Test #9</h2>
+            <p>
+                Ce test est important, car on s'assure que la méthode finishAndReturn ait le comportement attendu dans 2 scénarios importants de la méthode: trimming ou non des espaces vides. Étant donné que TextBuffer est responsable de gérer et d'optimiser le contenu String, il est primordial que les comportements attendus soient les bons, afin d'éviter les erreurs de formattage ou de corruption dans les situations ou les sorties de String doivent être faites avec précision.
+            </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>TextBuffer.java</code> ligne 1041</div>
+            <div>Test: <code>TextBufferTest.java</code> ligne 240</div>
+            <h4>Captures d'écran:</h4>
+            <div>Avant</div>
+            <img src="images/Tests-8-9-10-avant.png" alt="Test #9 avant" width="600">
+            <div>Après</div>
+            <img src="images/Test-9-apres.png" alt="Test #9 après" width="600">
+        </section>
+
+        <section></section>
+            <h2>Test #10</h2>
+            <p>
+                Ce test, sur la méthode expandCurrentSegment, est important, car TextBuffer est aussi responsable de gérer/optimiser l'espace accordé au texte. En s'assurant que le buffer applique une expansion efficace sans modifier le contenu existant (ou ne modifie rien lorsque la taille est déjà suffisante), on prévient la perte de données avec des inputs bien plus grands. Cela permet donc d'avoir un buffer qui s'ajuste de manière dynamique avec différentes tailles d'entrées.
+            </p>
+            <h4>Emplacements</h4>
+            <div>Méthode testée: <code>TextBuffer.java</code> ligne 1086</div>
+            <div>Test: <code>TextBufferTest.java</code> ligne 266</div>
+            <h4>Captures d'écran:</h4>
+            <div>Avant</div>
+            <img src="images/Tests-8-9-10-avant.png" alt="Test #10 avant" width="600">
+            <div>Après</div>
+            <img src="images/Tests-8-10-apres.png" alt="Test #10 après" width="600">
+        </section>
     </main>
 </body>
 </html>

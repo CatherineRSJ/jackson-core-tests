@@ -6,6 +6,9 @@ import java.io.IOException;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.Arrays;
+
+
 class TextBufferTest
     extends com.fasterxml.jackson.core.JUnit5TestBase
 {
@@ -212,6 +215,81 @@ class TextBufferTest
 
         assertEquals(2, textBuffer.size());
     }
+
+    //Ajout de trois tests TP1-3913
+
+    @Test//L'intention de ce test est de vérifier que la méthode initialise et met correctement à jour le TextBuffer avec un morceau de test fourni
+    void testResetWithCopy() throws IOException {
+        //Arrange
+        TextBuffer textBuffer = new TextBuffer(null);
+        String inputText = "JacksonLibrary";
+        int startIndex = 0;
+        int length = 7;  //morceau fourni qui est "Jackson"
+
+        //Act
+        textBuffer.resetWithCopy(inputText, startIndex, length);
+
+        //Assert
+        String result = textBuffer.toString();
+        String expected = "Jackson";
+        assertEquals(expected, result, "The TextBuffer should contain the correct substring after resetWithCopy.");
+    }
+
+    @Test //L'intention de ce test est de vérifier que le trimming (ou pas) et le retour que fait la méthode est bien fait, afin de couvrir 2
+          //possibilités de la méthode.
+    void testFinishAndReturn() throws IOException {
+        //Arrange
+        TextBuffer textBuffer = new TextBuffer(null);
+        String inputText = "JacksonLibrary   "; //3 espaces vides
+        textBuffer.resetWithCopy(inputText, 0, inputText.length());
+
+        //On fera le Act et le Assert en deux parties chacune
+
+        //Act: premier "Act" pour enlever les espaces vides
+        String resultWithTrim = textBuffer.finishAndReturn(inputText.length(), true);
+
+        //Assert
+        String expectedWithTrim = "JacksonLibrary"; //Sans
+        assertEquals(expectedWithTrim, resultWithTrim, "The TextBuffer should return the string without trailing spaces when trimTrailingSpaces is true.");
+
+        //Act: pour garder les espaces vides
+        textBuffer.resetWithCopy(inputText, 0, inputText.length()); //On reset le buffer
+        String resultWithoutTrim = textBuffer.finishAndReturn(inputText.length(), false);
+
+        //Assert
+        String expectedWithoutTrim = "JacksonLibrary   "; //Avec
+        assertEquals(expectedWithoutTrim, resultWithoutTrim, "The TextBuffer should return the string with trailing spaces when trimTrailingSpaces is false.");
+    }
+
+    @Test //L'intention de ce test est de vérifier que l'expansion du buffer interne se fait au moins à la taille demandée sans que cela influence
+          //le contenu déjà existant.
+    void testExpandCurrentSegment() throws IOException {
+        //Arrange
+        TextBuffer textBuffer = new TextBuffer(null);
+        String inputText = "Jackson";
+        textBuffer.resetWithCopy(inputText, 0, inputText.length());  //Initialiser avec inputText
+        char[] currentSegmentBeforeExpansion = textBuffer.contentsAsArray(); //Avoir le segment actuel
+
+        //On fera le Act et le Assert en deux parties chacune
+    
+        //Act: appeler la méthode avec un minSize plus grand pour forcer l'expansion
+        int minSize = currentSegmentBeforeExpansion.length + 10;  //Expansion
+        char[] expandedSegment = textBuffer.expandCurrentSegment(minSize);
+    
+        //Assert: vérifier que l'expansion a une longueur plus grand ou égale au minSize
+        assertTrue(expandedSegment.length >= minSize, "The expanded segment should have a size greater than or equal to the requested minSize.");
+        assertArrayEquals(currentSegmentBeforeExpansion, Arrays.copyOf(expandedSegment, currentSegmentBeforeExpansion.length),
+                "The contents of the expanded segment should match the initial contents before expansion.");
+    
+        //Act: appeler la méthode avec un minSize plus petit
+        char[] unmodifiedSegment = textBuffer.expandCurrentSegment(currentSegmentBeforeExpansion.length);
+    
+        //Assert: vérifier que le segment n'a pas été changé étant la taille déjà suffisante
+        assertSame(expandedSegment, unmodifiedSegment, "The current segment should remain unchanged when minSize is smaller or equal.");
+    }
+
+
+
 
     public void testContentsAsFloat() throws IOException {
         TextBuffer textBuffer = new TextBuffer(null);

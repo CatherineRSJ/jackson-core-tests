@@ -9,6 +9,8 @@ import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.json.JsonWriteFeature;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @since 2.17
@@ -65,4 +67,36 @@ class JsonWriteFeatureEscapeForwardSlashTest
         generator.writeStringField("url", "http://example.com");
         generator.writeEndObject(); // end object
     }
+
+    //Ajout de deux tests TP1-3913
+
+    @Test //L'intention de ce test est de vérifier que la collecte des états par défauts des fonctionnalités est le bon (avec le bitmask)
+    void testCollectDefaults() {
+        //Arrange: exceptionnellement, il n'y a pas de setup spécial ou spécifique puisqu'on teste une méthode statique qui se concentre sur des fonctionnalités
+        //prédéfinies dans le "enum" (fichier JsonWriteFeature). 
+    
+        //Act
+        int defaultFlags = JsonWriteFeature.collectDefaults();
+    
+        //Assert
+        int expectedFlags = 19;
+        assertEquals(expectedFlags, defaultFlags, "The collectDefaults method should return the correct default flags.");
+    }
+
+    @Test //L'intention de ce test est de vérifier l'activation (enabled) d'une fonctionnalité donnée est bel et bien présente.
+    void testEnabledIn() {
+        //Arrange
+        JsonWriteFeature feature = JsonWriteFeature.ESCAPE_FORWARD_SLASHES;
+        int flagsWithFeatureEnabled = feature.getMask();  //Retourner le mask associée à la fonctionnalité
+        int flagsWithoutFeatureEnabled = 0;  
+
+        //Act
+        boolean isEnabled = feature.enabledIn(flagsWithFeatureEnabled);
+        boolean isDisabled = feature.enabledIn(flagsWithoutFeatureEnabled);
+
+        //Assert
+        assertTrue(isEnabled, "Feature should be enabled when the corresponding flag is set.");
+        assertFalse(isDisabled, "Feature should be disabled when the flag is not set.");
+    }
+
 }
