@@ -7,38 +7,35 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # The tests will run once for each flag
+        jvm_flags: ["-Xms1024m -Xmx2048m", "-XX:+UseParallelGC"]
     steps:
-      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+      - uses: actions/checkout@v692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Set up JDK 17
-        uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+        uses: actions/setup-java@v6a0805fcefea3d4657a47ac4c165951e33482018 # v4
         with:
           java-version: '17'
           distribution: 'temurin'
           cache: maven
 
-      - name: Run Maven tests & JaCoCo coverage with JVM flags
+      - name: Run Maven tests with ${{ matrix.jvm_flags }}
+        run: mvn verify -DargLine="${{ matrix.jvm_flags }}"
+
+      - name: Get JaCoCo Coverage with ${{ matrix.jvm_flags }}
+        id: coverage
         run: |
-          # The tests will run once for each flag
-          JVM_FLAGS=(
-            "-Xms1024m -Xmx2048m"
-            "-XX:+UseParallelGC"
-          )
+          coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv)
+          echo "${{ matrix.jvm_flags }} - COVERAGE=$coverage" >> $GITHUB_ENV
 
-          # Loop through the flags and run tests
-          for FLAG in "${JVM_FLAGS[@]}"; do
-            echo "Running tests with $FLAG"
-            mvn verify -DargLine="$FLAG"
-
-            # Get JaCoCo Coverage
-            coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv)
-            echo "$FLAG - COVERAGE=$coverage" >> $GITHUB_ENV
-
-            # Fail if coverage has not improved
-            threshold=81.58
-            if (( $(echo "$coverage - $threshold <= 0.1" | bc -l) )); then
-              echo "Coverage has not improved."
-              exit 1
-            else
-              echo "New coverage: $coverage%"
-            fi
-          done
+      - name: Fail if coverage has not improved.
+        run: |
+          coverage=$COVERAGE
+          threshold=81.58
+          if (( $(echo "$coverage - $threshold <= 0.1" | bc -l) )); then
+            echo "Coverage has not improved."
+            exit 1
+          else
+            echo "New coverage: $coverage%"
+          fi
