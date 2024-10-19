@@ -27,7 +27,8 @@ jobs:
         id: coverage
         run: |
           echo "${GITHUB_WORKSPACE}"
-          echo "ls"
+          test=ls
+          echo "$test"
           coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv)
           echo "COVERAGE=$coverage" >> $GITHUB_ENV
 
