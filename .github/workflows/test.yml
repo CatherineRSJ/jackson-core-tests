@@ -27,7 +27,7 @@ jobs:
         id: coverage
         run: |
           coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv)
-          echo "${{ matrix.jvm_flags }} - COVERAGE=$coverage" >> $GITHUB_ENV
+          echo "COVERAGE=$coverage" >> $GITHUB_ENV
 
       - name: Fail if coverage has not improved.
         run: |
@@ -39,3 +39,41 @@ jobs:
           else
             echo "New coverage: $coverage%"
           fi
+
+
+# name: Maven tests
+
+# on:
+#   pull_request:
+#   push:
+
+# jobs:
+#   build:
+#     runs-on: ubuntu-latest
+#     steps:
+#       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
+#       - name: Set up JDK 17
+#         uses: actions/setup-java@6a0805fcefea3d4657a47ac4c165951e33482018 # v4
+#         with:
+#           java-version: '17'
+#           distribution: 'temurin'
+#           cache: maven
+
+#       - name: Run Maven tests
+#         run: mvn verify
+
+#       - name: Get JaCoCo Coverage
+#         id: coverage
+#         run: |
+#           coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv)
+#           echo "COVERAGE=$coverage" >> $GITHUB_ENV
+#       - name: Fail if coverage has not improved.
+#         run: |
+#           coverage=$COVERAGE
+#           threshold=81.58
+#           if (( $(echo "$coverage - $threshold <= 0.1" | bc -l) )); then
+#             echo "Coverage has not improved."
+#             exit 1
+#           else
+#             echo "New coverage: $coverage%"
+#           fi
