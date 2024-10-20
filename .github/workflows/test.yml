@@ -21,8 +21,8 @@ jobs:
           cache: maven
 
       - name: Run Maven tests with ${{ matrix.jvm_flags }}
-        # run: mvn verify -DargLine="${{ matrix.jvm_flags }}"
-        run: mvn verify
+        run: mvn verify -DargLine="@{argLine} ${{ matrix.jvm_flags }}"
+        # run: mvn verify -X
 
       - name: Get JaCoCo Coverage with ${{ matrix.jvm_flags }}
         id: coverage
