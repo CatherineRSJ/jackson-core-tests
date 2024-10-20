@@ -21,20 +21,12 @@ jobs:
           cache: maven
 
       - name: Run Maven tests with ${{ matrix.jvm_flags }}
-        run: mvn verify -DargLine="${{ matrix.jvm_flags }}"
+        # run: mvn verify -DargLine="${{ matrix.jvm_flags }}"
+        run: mvn verify
 
       - name: Get JaCoCo Coverage with ${{ matrix.jvm_flags }}
         id: coverage
         run: |
-          echo "$(ls)"
-          echo "Moving to target"
-          cd target
-          echo "$(ls)"
-          echo "Moving to site"
-          cd site
-          echo "$(ls)"
-          echo "Moving to jacoco"
-          echo "$(ls)"
           coverage=$(python3 config/coverage.py target/site/jacoco/jacoco.csv)
           echo "COVERAGE=$coverage" >> $GITHUB_ENV
 
