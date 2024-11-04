@@ -10,7 +10,7 @@ jobs:
     strategy:
       matrix:
         # The tests will run once for each flag
-        jvm_flags: ["-Xms1024m -Xmx2048m", "-XX:+UseParallelGC"]
+        jvm_flags: ["-Xms1024m -Xmx2048m", "-XX:+UseParallelGC", "-XX:+PrintGCDetails", "-XX:+UseAES", "-XX:+TieredCompilation"]
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4
       - name: Set up JDK 17
