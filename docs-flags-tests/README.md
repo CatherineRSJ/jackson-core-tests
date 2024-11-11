@@ -27,6 +27,8 @@ L'action de tests fonctionnait parfaitement, le problème était au niveau de Ja
 Le dossier `target` ne se générait pas de la bonne façon.
 Cela était dû au fait que JaCoCo utilise `-DargLine` pour générer le code coverage, et le paramètre `@{argLine}` est ce qu'utilise JaCoCo, donc il est important de toujours l'envoyer.
 
+Nous nous sommes inspirés de [cette vidéo Youtube](https://youtu.be/xvFZjo5PgG0) pour mieux comprendre comment fonctionnaient les tests et les Github Action.
+
 # Justification
 ## Xmx / Xms (type: Heap)
 Nous considerons ces 2 flags comme un seul puisqu'ils sont très semblables.
